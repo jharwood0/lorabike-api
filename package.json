@@ -21,11 +21,16 @@
   },
   "homepage": "https://github.com/jharwood0/lorabike-api#readme",
   "dependencies": {
+    "bcrypt": "^1.0.2",
     "body-parser": "^1.17.1",
     "config": "^1.25.1",
     "express": "^4.15.2",
+    "express-jwt": "^5.1.0",
+    "jsonwebtoken": "^7.3.0",
     "mongoose": "^4.9.0",
-    "morgan": "^1.8.1"
+    "morgan": "^1.8.1",
+    "passport": "^0.3.2",
+    "passport-jwt": "^2.2.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",
