@@ -1,0 +1,35 @@
+{
+  "name": "lorabike-api",
+  "version": "0.0.1",
+  "description": "LoRaWAN based cycle tracking (api)",
+  "main": "server.js",
+  "scripts": {
+    "start": "SET NODE_ENV=dev && node server.js",
+    "test": "mocha --timeout 10000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jharwood0/lorabike-api.git"
+  },
+  "keywords": [
+    "LoRaWAn"
+  ],
+  "author": "jharwood0",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jharwood0/lorabike-api/issues"
+  },
+  "homepage": "https://github.com/jharwood0/lorabike-api#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "config": "^1.25.1",
+    "express": "^4.15.2",
+    "mongoose": "^4.9.0",
+    "morgan": "^1.8.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "mocha": "^3.2.0"
+  }
+}
