@@ -4,7 +4,7 @@
   "description": "LoRaWAN based cycle tracking (api)",
   "main": "server.js",
   "scripts": {
-    "start": "SET NODE_ENV=dev && node server.js",
+    "start": "set NODE_ENV=dev && node server.js",
     "test": "mocha --timeout 10000"
   },
   "repository": {
