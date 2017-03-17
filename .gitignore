@@ -1,5 +1,10 @@
 # Configs
+config
 config/
+config/default.json
+config/dev.json
+config/test.json
+config/*.json
 
 # Logs
 logs
