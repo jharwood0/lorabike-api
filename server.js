@@ -12,7 +12,6 @@ let port = 8080;
 /* auth */
 let auth = require('./app/auth/auth');
 
-/* models */
 let device = require('./app/routes/device');
 let user = require('./app/routes/user');
 
@@ -47,23 +46,30 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.text());
 app.use(bodyParser.json({type:'application/json'}));
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 /* unauthenticated routes */
 app.get('/', (req, res) => res.json({message:"Welcome to the LoRaBike API!"}));
-app.route('/user/')
+app.route('/api/user/')
     .post(user.createUser);
-app.route('/user/authenticate')
+app.route('/api/user/authenticate')
     .post(user.authenticateUser)
 
 /* secure routes */
 app.use(auth.authenticate);
 
-app.route('/device/')
-    .post(device.createDevice);
-app.route("/device/:id")
+app.route('/api/device/')
+    .post(device.createDevice)
+    .get(device.getDevices);
+app.route("/api/device/:id")
     .get(device.getDevice)
     .delete(device.deleteDevice)
     .put(device.updateDevice);
-app.route('/user/:id')
+app.route('/api/user/:id')
     .get(user.getUser)
     .delete(user.deleteUser)
     .put(user.updateUser);

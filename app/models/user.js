@@ -1,21 +1,32 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
+mongoose.Promise = global.Promise;
+
 var UserSchema = new Schema({
-    username: {
-        type: String,
-        unique: true,
-        required: true
-    },
-    email: {
-      type: String,
-      unique: true,
-      required: true
-    },
-    password: {
-        type: String,
-        required: true
-    }
+  username: {
+    type: String,
+    unique: true,
+    required: true
+  },
+  email: {
+    type: String,
+    unique: true,
+    required: true
+  },
+  password: {
+    type: String,
+    unique: true,
+    required: true
+  },
+  devices: {
+    type: [Schema.Types.ObjectId],
+    default: []
+  },
+  created: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 UserSchema.pre('save', function (next) {
@@ -38,7 +49,6 @@ UserSchema.pre('save', function (next) {
   }
 });
 
-// Create method to compare password input to password saved in database
 UserSchema.methods.comparePassword = function(pw, cb) {
   bcrypt.compare(pw, this.password, function(err, isMatch) {
     if (err) {
@@ -48,4 +58,5 @@ UserSchema.methods.comparePassword = function(pw, cb) {
   });
 };
 
-module.exports = mongoose.model('User', UserSchema);
+var User = mongoose.model('User', UserSchema);
+module.exports = User;
