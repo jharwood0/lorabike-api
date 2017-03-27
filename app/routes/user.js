@@ -9,6 +9,7 @@ let config = require('config');
 function getUser(req, res){
   User.findById(req.params.id, (err, user) => {
     if(err) res.send(err);
+    console.log(user);
     res.json(user);
   });
 }
