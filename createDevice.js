@@ -4,7 +4,7 @@ var base = "http://eu.thethings.network:8084";
 var setDeviceUrl = "/applications/lorabike/devices";
 var key = "ttn-account-v2.fGzE7iwVW8iw_JlhlwelYOJs7kPztjd_B2A4UWt4pMs";
 
-module.exports = function(devId, devEui, description){
+module.exports = function(devId, devEui, description, callback){
   var device = {
     app_id: "lorabike",
     dev_id: devId,
@@ -23,7 +23,6 @@ module.exports = function(devId, devEui, description){
       uses32_bit_f_cnt: true
     }
   }
-  console.log(device);
   var options = {
     url : base+setDeviceUrl,
     method: "POST",
@@ -35,7 +34,14 @@ module.exports = function(devId, devEui, description){
   };
   request(options, function(err, res, body){
     console.log(err);
-    console.log(res.status);
+    console.log("Status = " + res.statusCode);
     console.log(body);
+    if(res.statusCode == 200){
+      console.log("Success!");
+      callback(null);
+    }else{
+      console.log("Failed");
+      callback(body);
+    }
   });
 };

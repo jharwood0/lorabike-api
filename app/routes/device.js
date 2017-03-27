@@ -47,17 +47,31 @@ function deleteDevice(req, res){
 
 function createDevice(req, res){
   User.findById(req.decoded._id, (err, user) => {
-    if(err) res.send(err);
-    let newDevice = new Device(req.body);
-    createTTNDevice(newDevice.name, newDevice.devEUI, "description");
-    newDevice.save((err, device) =>{
-      if(err) res.send(err);
-      user.devices.push(newDevice._id);
-      user.save((err, user) =>{
-        if(err) res.send(err);
-        res.json({message:"Device Created!", newDevice})
+    if(err || !user){
+      res.send(err);
+    }else{
+      let newDevice = new Device(req.body);
+      createTTNDevice(newDevice.name, newDevice.devEUI, newDevice.description, (error) =>{
+        if(error != null){
+          res.send({"message": "problem contact TTN. Try again later"});
+        }else{
+          newDevice.save((err, device) => {
+            if(err) {
+              res.send(err);
+            }else{
+              user.devices.push(newDevice._id);
+              user.save((err, user) =>{
+                if(err){
+                  console.log(err);
+                }else{
+                  res.json({message:"Device Created!", success: true})
+                }
+              });
+            }
+          });
+        }
       });
-    });
+    }
   });
 }
 

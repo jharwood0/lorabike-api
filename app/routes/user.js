@@ -54,7 +54,7 @@ function authenticateUser(req, res){
         if(isMatch){
           let tokenInfo = { username : user.username, _id : user._id, email : user.email}
           console.log(tokenInfo);
-          let token = jwt.sign(tokenInfo, config.jwtSecret, {expiresIn: 1440 });
+          let token = jwt.sign(tokenInfo, config.jwtSecret, {expiresIn: "2 days" });
           res.json({message:"Authentication successful.", token, success: true});
         }else{
           res.json({message:"Authentication failed.", success: false});

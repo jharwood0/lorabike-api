@@ -11,9 +11,9 @@ var DeviceSchema = new Schema({
     type: String,
     unique: true
   },
-  appKey: {
+  description: {
     type: String,
-    unique: true
+    unique: false
   },
   uplinks: {
     type: [],
