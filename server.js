@@ -1,8 +1,18 @@
 let express = require('express');
+let cors = require('cors');
 let app = express();
 let mongoose = require('mongoose');
 let morgan = require('morgan');
 let bodyParser = require('body-parser');
+
+var uplinkHandler = require("./uplinkHandler");
+
+var ttn = require('ttn');
+var fs = require('fs'); /* fetching cert */
+var ttnOptions = {
+  protocol: 'mqtts',
+  ca: [ fs.readFileSync('mqtt-ca.pem') ],
+}
 
 let jwt = require('jsonwebtoken');
 let expressJWT = require('express-jwt');
@@ -12,7 +22,6 @@ let port = 8080;
 /* auth */
 let auth = require('./app/auth/auth');
 
-/* models */
 let device = require('./app/routes/device');
 let user = require('./app/routes/user');
 
@@ -47,27 +56,31 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.text());
 app.use(bodyParser.json({type:'application/json'}));
 
+app.use(cors());
+
 /* unauthenticated routes */
 app.get('/', (req, res) => res.json({message:"Welcome to the LoRaBike API!"}));
-app.route('/user/')
+app.route('/api/user/')
     .post(user.createUser);
-app.route('/user/authenticate')
+app.route('/api/user/authenticate')
     .post(user.authenticateUser)
 
 /* secure routes */
 app.use(auth.authenticate);
 
-app.route('/device/')
-    .post(device.createDevice);
-app.route("/device/:id")
+app.route('/api/device/')
+    .post(device.createDevice)
+    .get(device.getDevices);
+app.route("/api/device/:id")
     .get(device.getDevice)
     .delete(device.deleteDevice)
     .put(device.updateDevice);
-app.route('/user/:id')
+app.route('/api/user/:id')
     .get(user.getUser)
     .delete(user.deleteUser)
     .put(user.updateUser);
 
 app.listen(port)
 console.log("Listening on port "+port);
+
 module.exports = app;

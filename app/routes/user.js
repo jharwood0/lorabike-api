@@ -1,5 +1,7 @@
 let mongoose = require('mongoose');
+let Device = require('../models/device');
 let User = require('../models/user');
+
 let jwt    = require('jsonwebtoken');
 let config = require('config');
 
@@ -41,19 +43,22 @@ function updateUser(req, res){
 }
 
 function authenticateUser(req, res){
-  User.findOne({username:req.body.username}, (err, user) => {
-    if(err) res.send(err);
-    user.comparePassword(req.body.password, (err, isMatch) => {
-      if(err) res.send(err);
-      if(isMatch){
-        let tokenInfo = { username : user.username, _id : user._id, email : user.email}
-        console.log(tokenInfo);
-        let token = jwt.sign(tokenInfo, config.jwtSecret, {expiresIn: 1440 });
-        res.json({message:"Authentication successful.", token});
-      }else{
-        res.json({message:"Authentication failed."});
-      }
-    });
+  User.findOne({"username":req.body.username}, (err, user) => {
+    if(err || !user){
+      res.send({message: "incorrect username or password", success: false});
+    }else{
+      user.comparePassword(req.body.password, (err, isMatch) => {
+        if(err) res.send(err);
+        if(isMatch){
+          let tokenInfo = { username : user.username, _id : user._id, email : user.email}
+          console.log(tokenInfo);
+          let token = jwt.sign(tokenInfo, config.jwtSecret, {expiresIn: 1440 });
+          res.json({message:"Authentication successful.", token, success: true});
+        }else{
+          res.json({message:"Authentication failed.", success: false});
+        }
+      });
+    }
   });
 }
 
