@@ -21,12 +21,14 @@ function deleteUser(req, res){
 
 function createUser(req, res){
   let newUser = new User(req.body);
+  console.log("Creating user = ");
+  console.log(newUser);
   newUser.save((err, user) => {
     if(err){
       res.send(err);
     }else{
       user.password = null;
-      res.json({message:"User successfully created!", user});
+      res.json({message:"User successfully created!", user, success: true});
     }
   });
 }

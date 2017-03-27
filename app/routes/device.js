@@ -1,5 +1,7 @@
 let mongoose = require('mongoose');
 
+let createTTNDevice = require('../../createDevice');
+
 let Device = require('../models/device');
 let User = require('../models/user');
 
@@ -47,6 +49,7 @@ function createDevice(req, res){
   User.findById(req.decoded._id, (err, user) => {
     if(err) res.send(err);
     let newDevice = new Device(req.body);
+    createTTNDevice(newDevice.name, newDevice.devEUI, "description");
     newDevice.save((err, device) =>{
       if(err) res.send(err);
       user.devices.push(newDevice._id);

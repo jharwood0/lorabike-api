@@ -41,11 +41,17 @@ JSON.stringify(data, null, 2));
 client.on('message', function(deviceName, data) {
   Device.findOne({"name":deviceName}, (err, device) => {
     if(err || device == null){
-      console.log(err);
+      console.log("Device " + deviceName + " does not exist...");
     }else{
-      console.log(deviceId);
+      console.log(deviceName);
       console.log(data.payload_fields);
-      device.uplink.push(data.payload_fields);
+      console.log(device);
+      device.uplinks.push(data.payload_fields);
+      device.save((err, device) =>{
+        if(err){
+          console.log(err);
+        }
+      });
     }
 
   });
