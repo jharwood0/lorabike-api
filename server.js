@@ -1,8 +1,18 @@
 let express = require('express');
+let cors = require('cors');
 let app = express();
 let mongoose = require('mongoose');
 let morgan = require('morgan');
 let bodyParser = require('body-parser');
+
+var uplinkHandler = require("./uplinkHandler");
+
+var ttn = require('ttn');
+var fs = require('fs'); /* fetching cert */
+var ttnOptions = {
+  protocol: 'mqtts',
+  ca: [ fs.readFileSync('mqtt-ca.pem') ],
+}
 
 let jwt = require('jsonwebtoken');
 let expressJWT = require('express-jwt');
@@ -46,11 +56,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.text());
 app.use(bodyParser.json({type:'application/json'}));
 
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+app.use(cors());
 
 /* unauthenticated routes */
 app.get('/', (req, res) => res.json({message:"Welcome to the LoRaBike API!"}));
@@ -76,4 +82,5 @@ app.route('/api/user/:id')
 
 app.listen(port)
 console.log("Listening on port "+port);
+
 module.exports = app;
