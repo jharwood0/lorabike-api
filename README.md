@@ -1,6 +1,9 @@
-# lorabike-api
+# LoRaBike-api
 LoRaWAN based cycle tracking
-# configuration
+## Installation
+``npm install``
+
+## Configuration
 this project requires a config folder holding the following folders with this config json:
 
 /config/default.json
@@ -18,3 +21,6 @@ this project requires a config folder holding the following folders with this co
   "ttnAccessKey" : ""
 }
 ```
+
+## Running
+``npm start``
