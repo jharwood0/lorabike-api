@@ -55,6 +55,23 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.text());
 app.use(bodyParser.json({type:'application/json'}));
 
+/* Catch all errorhandler */
+router.use(function (err, req, res, next) {
+    /* We log the error internaly */
+    logger.error(err);
+
+    /*
+     * Remove Error's `stack` property. We don't want
+     * users to see this at the production env
+     */
+    if (req.app.get('env') !== 'development') {
+        delete err.stack;
+    }
+
+    /* Finaly respond to the request */
+    res.status(err.statusCode || 500).json(err);
+});
+
 app.use(cors());
 
 /* unauthenticated routes */
