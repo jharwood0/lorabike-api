@@ -56,7 +56,7 @@ app.use(bodyParser.text());
 app.use(bodyParser.json({type:'application/json'}));
 
 /* Catch all errorhandler */
-router.use(function (err, req, res, next) {
+app.use(function (err, req, res, next) {
     /* We log the error internaly */
     logger.error(err);
 
