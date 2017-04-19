@@ -16,7 +16,7 @@ var ttnOptions = {
 let jwt = require('jsonwebtoken');
 let expressJWT = require('express-jwt');
 
-let port = 8080;
+let port = 4000;
 
 /* auth */
 let auth = require('./app/auth/auth');

@@ -1,6 +1,9 @@
 var ttn = require('ttn');
 var fs = require('fs');
 
+var CircularBuffer = require("circular-buffer");
+let bufferSize = 20;
+
 let mongoose = require('mongoose');
 let Device = require('./app/models/device');
 let User = require('./app/models/user');
@@ -43,10 +46,15 @@ client.on('message', function(deviceName, data) {
     if(err || device == null){
       console.log("Device " + deviceName + " does not exist...");
     }else{
-      console.log(deviceName);
-      console.log(data.payload_fields);
-      console.log(device);
-      device.uplinks.push(data.payload_fields);
+      // create circ buf of uplinks
+      var buf = new CircularBuffer(bufferSize);
+      for(uplink of device.uplinks){
+        buf.enq(uplink);
+      }
+      // push new data
+      buf.enq(data.payload_fields)
+      // save buf to db
+      device.uplinks = buf.toarray();
       device.save((err, device) =>{
         if(err){
           console.log(err);
