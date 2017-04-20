@@ -10,7 +10,13 @@ function getDevices(req, res){
     if(err) res.send(err);
     Device.find({'_id': {$in: user.devices}}, (err, devices) =>{
       if(err) res.send(err);
-      res.json(devices);
+      var toSend = devices;
+      // Add demo tracker for all users (Hardcoded hacked)
+      Device.findOne({devEUI: "FFFFFFFFFFFFFFFF"}, (err, device) => {
+        toSend.push(device);
+      });
+
+      res.json(toSend);
     });
   });
 }
