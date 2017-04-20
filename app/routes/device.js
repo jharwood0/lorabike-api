@@ -14,9 +14,9 @@ function getDevices(req, res){
       // Add demo tracker for all users (Hardcoded hacked)
       Device.findOne({devEUI: "FFFFFFFFFFFFFFFF"}, (err, device) => {
         toSend.push(device);
-      });
 
-      res.json(toSend);
+        res.json(toSend);
+      });
     });
   });
 }
