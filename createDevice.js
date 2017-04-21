@@ -2,7 +2,7 @@
 var request = require('request');
 var base = "http://eu.thethings.network:8084";
 var setDeviceUrl = "/applications/lorabike/devices";
-var key = "ttn-account-v2.fGzE7iwVW8iw_JlhlwelYOJs7kPztjd_B2A4UWt4pMs";
+let config = require('config');
 
 module.exports = function(devId, devEui, description, callback){
   var device = {
@@ -28,7 +28,7 @@ module.exports = function(devId, devEui, description, callback){
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": "key "+key
+      "Authorization": "key "+config.ttnAccessKey
     },
     json: device
   };
