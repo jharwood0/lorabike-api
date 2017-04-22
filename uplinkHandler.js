@@ -50,10 +50,10 @@ client.on('message', function(deviceName, data) {
       // create circ buf of uplinks
       var buf = new CircularBuffer(bufferSize);
       for(uplink of device.uplinks){
-        buf.enq(uplink);
+        buf.push(uplink);
       }
       // push new data
-      buf.enq(data.payload_fields)
+      buf.push(data.payload_fields)
       // save buf to db
       device.uplinks = buf.toarray();
       device.save((err, device) =>{
