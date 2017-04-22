@@ -1,6 +1,8 @@
 var ttn = require('ttn');
 var fs = require('fs');
 
+let config = require('config');
+
 var CircularBuffer = require("circular-buffer");
 let bufferSize = 20;
 
@@ -10,13 +12,12 @@ let User = require('./app/models/user');
 
 var region = 'eu';
 var appId = 'lorabike';
-var accessKey = 'ttn-account-v2.tSEgx_BCi3N_FWw8URlDHWs9oyCSXlCJh_k835mtwGs';
 var options = {
   protocol: 'mqtts',
   ca: [ fs.readFileSync('mqtt-ca.pem') ],
 }
 
-var client = new ttn.Client(region, appId, accessKey, [options]);
+var client = new ttn.Client(region, appId, config.ttnAccessKey, [options]);
 
 client.on('connect', function(connack) {
   console.log('[DEBUG]', 'Connect:', connack);
