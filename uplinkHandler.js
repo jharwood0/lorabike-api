@@ -4,7 +4,7 @@ var fs = require('fs');
 let config = require('config');
 
 var CircularBuffer = require("circular-buffer");
-let bufferSize = 20;
+var bufferSize = 20;
 
 let mongoose = require('mongoose');
 let Device = require('./app/models/device');
